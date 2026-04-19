@@ -1,4 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import { Role } from 'src/modules/persons/person-roles.enum';
+import { PermissionLevel } from 'src/modules/contact/person/user/user-roles.enum';
 
-export const Roles = (...roles: Role[]) => SetMetadata('roles', roles); 
+export const AllowedPermissionLevel = (...permissionLevels: PermissionLevel[]) => SetMetadata('permissionLevels', permissionLevels); 

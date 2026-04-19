@@ -2,11 +2,9 @@ import { Logger } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import 'dotenv/config';
-import { AppConstants as C } from './core/app.constants';
+import { AppConstants as Constants } from './core/app.constants';
 import { AppModule } from './core/app.module';
 import { AppContextDataSource } from './data/data-source';
-import { ValidationPipe } from '@nestjs/common';
-import express from 'express';
 import { ExtendedValidationPipe } from './common/pipes/extended-validation.pipe';
 
 async function bootstrap() {
@@ -14,11 +12,9 @@ async function bootstrap() {
 		`Running ${process.env.npm_package_name} -${process.env.npm_package_version} on environment ${process.env.NODE_ENV}`
 	);
 
-	if (process.env.NODE_ENV === 'development') {
-		Logger.log(
-			`Running on development environment -- Database configuration: { host: ${process.env.DB_HOST}, port:${process.env.DB_PROXY_PORT}, name: ${process.env.DB_NAME}}`
-		);
-	}
+	
+	Logger.debug(`Running on development environment -- Database configuration: { host: ${process.env.DB_HOST}, port:${process.env.DB_PORT}, name: ${process.env.DB_NAME}}`);
+	
 
 	if (!AppContextDataSource.isInitialized) {
 		await AppContextDataSource.initialize();
@@ -26,12 +22,12 @@ async function bootstrap() {
 
 	const app = await NestFactory.create(AppModule);
 
-	app.setGlobalPrefix(C.APP_GLOBAL_PREFIX);
+	app.setGlobalPrefix(Constants.APP_GLOBAL_PREFIX);
 
 	const config = new DocumentBuilder()
-		.setTitle(C.SWAGGER_TITLE)
-		.setDescription(C.SWAGGER_DESCPTION)
-		.setVersion(C.SWAGGER_VERSION)
+		.setTitle(Constants.SWAGGER_TITLE)
+		.setDescription(Constants.SWAGGER_DESCPTION)
+		.setVersion(Constants.SWAGGER_VERSION)
 		.addBearerAuth(
 			{
 				type: 'http',
@@ -40,7 +36,7 @@ async function bootstrap() {
 				in: 'header',
 				name: 'Authorization'
 			},
-			C.SWAGGER_ACCES_TOKEN
+			Constants.SWAGGER_ACCES_TOKEN
 		)
 		.build();
 

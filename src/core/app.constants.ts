@@ -1,4 +1,4 @@
-import { AuthConstants } from "src/modules/auth/auth.constants";
+import { AuthConstants } from "src/auth/auth.constants";
 
 export class AppConstants {
 	private constructor() { }

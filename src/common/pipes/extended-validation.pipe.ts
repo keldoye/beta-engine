@@ -18,7 +18,7 @@ import { NO_VALIDATE_KEY } from '../decorators/no-validate.decorator';
  * @example
  * 
  * @NoValidate()
- * export class CreateRawTaskDTO { ... }
+ * export class CreateRawObjectDTO { ... }
  *
  * @param reflector - Used to retrieve metadata set by custom decorators.
  */

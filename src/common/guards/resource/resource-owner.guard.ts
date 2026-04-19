@@ -12,8 +12,8 @@ import {
 	CHECK_RESOURCE
 } from './decorators/resource.decorator';
 import { ModuleRef } from '@nestjs/core';
-import { Role } from 'src/modules/persons/person-roles.enum';
-import { IS_PUBLIC_KEY } from 'src/modules/auth/auth.decorator';
+import { PermissionLevel } from 'src/modules/contact/person/user/user-roles.enum';
+import { IS_PUBLIC_KEY } from 'src/auth/auth.decorator';
 
 @Injectable()
 export class ResourceOwnerGuard<T> implements CanActivate {
@@ -36,7 +36,8 @@ export class ResourceOwnerGuard<T> implements CanActivate {
 			RESOURCE_KEY,
 			context.getClass()
 		);
-		const resourceCheck = this.reflector.get<{ roleWhitelist?: Role[] }>(
+		
+		const resourceCheck = this.reflector.get<{ allowedPermissionLevels?: PermissionLevel[] }>(
 			CHECK_RESOURCE,
 			context.getHandler()
 		);
@@ -56,7 +57,7 @@ export class ResourceOwnerGuard<T> implements CanActivate {
 		}
 
 		// Check if user has a whitelisted role that bypasses ownership check
-		if (resourceCheck.roleWhitelist?.includes(user.role)) {
+		if (resourceCheck.allowedPermissionLevels?.includes(user.role)) {
 			return true;
 		}
 

@@ -4,24 +4,24 @@ import {
 	PrimaryGeneratedColumn,
 	UpdateDateColumn
 } from 'typeorm';
-import { DataConstants as C } from '../data.constants';
+import { DataConstants as Constants } from '../data.constants';
 
 export abstract class BaseVO {
-	@PrimaryGeneratedColumn(C.UUID)
+	@PrimaryGeneratedColumn(Constants.UUID)
 	id: string;
 
-	@CreateDateColumn({ type: C.TIMESTAMP })
+	@CreateDateColumn({ type: Constants.TIMESTAMP })
 	creationDateTime: Date;
 
 	@Column()
 	createdByUserId: string;
 
-	@UpdateDateColumn({ type: C.TIMESTAMP })
+	@UpdateDateColumn({ type: Constants.TIMESTAMP })
 	lastUpdateDateTime?: Date;
 
 	@Column({ nullable: true })
 	lastUpdateByUserId?: string;
 
-	@Column({ type: C.INT, default: 1 })
+	@Column({ type: Constants.INT, default: 1 })
 	version: number;
 }

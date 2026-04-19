@@ -5,8 +5,8 @@ import {
 	ForbiddenException
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Role } from 'src/modules/persons/person-roles.enum';
-import { IS_PUBLIC_KEY } from 'src/modules/auth/auth.decorator';
+import { PermissionLevel } from 'src/modules/contact/person/user/user-roles.enum';
+import { IS_PUBLIC_KEY } from 'src/auth/auth.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -22,11 +22,12 @@ export class RolesGuard implements CanActivate {
 			return true;
 		}
 
-		const requiredRoles = this.reflector.get<Role[]>(
-			'roles',
+		const requiredPermissionLevels = this.reflector.get<PermissionLevel[]>(
+			'permissionLevels',
 			context.getHandler()
 		);
-		if (!requiredRoles) {
+
+		if (!requiredPermissionLevels) {
 			return true; // No roles required
 		}
 
@@ -37,12 +38,14 @@ export class RolesGuard implements CanActivate {
 			throw new ForbiddenException('User not authenticated');
 		}
 
-		const hasRequiredRole = requiredRoles.some(
-			(role) => user.role.toLowerCase() === role.toLowerCase()
+		const hasRequiredRole = requiredPermissionLevels.some(
+			(permissionLevel) =>
+				user.permissionLevel.toLowerCase() === permissionLevel.toLowerCase()
 		);
+
 		if (!hasRequiredRole) {
 			throw new ForbiddenException(
-				'You do not have the required roles to access this resource'
+				'You do not have the required permission level(s) to access this resource'
 			);
 		}
 

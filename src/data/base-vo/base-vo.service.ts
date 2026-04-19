@@ -7,7 +7,7 @@ import { BaseVO } from './base-vo.abstract';
  * @param userId ID of the user who makes the update
  */
 export class BaseVOService {
-	private constructor() {}
+	protected constructor() {}
 
 	private static instance: BaseVOService;
 
